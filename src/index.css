@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Coffee brand palette */
+    --background: 28 35% 92%;
+    --foreground: 22 40% 8%;
+
+    --card: 28 30% 96%;
+    --card-foreground: 22 40% 8%;
+
+    --popover: 28 30% 96%;
+    --popover-foreground: 22 40% 8%;
+
+    --primary: 22 40% 8%;            /* deep espresso */
+    --primary-foreground: 32 50% 92%;
+
+    --secondary: 32 45% 85%;          /* cream */
+    --secondary-foreground: 22 40% 8%;
+
+    --muted: 30 25% 80%;
+    --muted-foreground: 22 20% 32%;
+
+    --accent: 30 45% 60%;             /* caramel */
+    --accent-foreground: 22 40% 8%;
+
+    --gold: 34 50% 64%;
+    --espresso: 22 50% 6%;
+    --cream: 32 50% 92%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 32 50% 92%;
+
+    --border: 30 25% 80%;
+    --input: 30 25% 80%;
+    --ring: 30 45% 60%;
+
+    --radius: 0.75rem;
+
+    --gradient-warm: linear-gradient(135deg, hsl(22 50% 6%), hsl(22 40% 14%) 50%, hsl(28 40% 22%));
+    --gradient-glow: radial-gradient(circle at center, hsl(34 70% 55% / 0.7), hsl(22 50% 6% / 0));
+    --shadow-warm: 0 20px 60px -20px hsl(22 50% 6% / 0.6);
+    --shadow-glow: 0 0 80px hsl(34 70% 55% / 0.4);
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html, body { @apply bg-background text-foreground; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+}
+
+@layer utilities {
+  .font-display { font-family: 'Playfair Display', Georgia, serif; }
+  .bg-gradient-warm { background: var(--gradient-warm); }
+  .bg-gradient-glow { background: var(--gradient-glow); }
+  .shadow-warm { box-shadow: var(--shadow-warm); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .text-balance { text-wrap: balance; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 40s linear infinite; }
+.marquee-pause:hover .animate-marquee { animation-play-state: paused; }
+
+@keyframes steam {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-120px) scale(1.6); opacity: 0; }
+}
+.animate-steam { animation: steam 3.5s ease-out infinite; }
+
+@keyframes sauce-cross {
+  from { transform: translate(120%, -50%); }
+  to { transform: translate(-120%, -50%); }
+}
