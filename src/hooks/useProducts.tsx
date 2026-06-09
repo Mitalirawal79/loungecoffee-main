@@ -32,6 +32,77 @@ const assetMap: Record<string, string> = {
   "/src/assets/lounge-orange.png": orange,
 };
 
+const fallbackProducts: DbProduct[] = [
+  {
+    id: "classic",
+    slug: "lounge-classic",
+    name: "Lounge Classic",
+    flavor: "Rich & Aromatic",
+    price_cents: 550,
+    image_url: "/src/assets/lounge-yellow.png",
+    origin: "Ethiopia, Yirgacheffe",
+    roast: "Medium",
+    notes: "Citrus zest, milk chocolate, soft floral finish",
+    ingredients: ["Single-origin espresso", "Steamed milk", "Vanilla bean"],
+    active: true,
+    sort_order: 1,
+    sku: "LOUNGE-CLASSIC",
+    category: "coffee",
+    stock: 25,
+  },
+  {
+    id: "ruby",
+    slug: "lounge-ruby",
+    name: "Lounge Ruby",
+    flavor: "Bold & Berry",
+    price_cents: 600,
+    image_url: "/src/assets/lounge-red.png",
+    origin: "Colombia, Huila",
+    roast: "Medium-Dark",
+    notes: "Red berries, caramel, creamy body",
+    ingredients: ["Cold brew", "Berry reduction", "Cream swirl"],
+    active: true,
+    sort_order: 2,
+    sku: "LOUNGE-RUBY",
+    category: "coffee",
+    stock: 25,
+  },
+  {
+    id: "midnight",
+    slug: "lounge-midnight",
+    name: "Lounge Midnight",
+    flavor: "Bold & Intense",
+    price_cents: 350,
+    image_url: "/src/assets/lounge-black.png",
+    origin: "Brazil, Cerrado",
+    roast: "Dark",
+    notes: "Dark chocolate, hazelnut, lingering finish",
+    ingredients: ["Double espresso", "Golden crema"],
+    active: true,
+    sort_order: 3,
+    sku: "LOUNGE-MIDNIGHT",
+    category: "coffee",
+    stock: 25,
+  },
+  {
+    id: "sunset",
+    slug: "lounge-sunset",
+    name: "Lounge Sunset",
+    flavor: "Warm & Spiced",
+    price_cents: 475,
+    image_url: "/src/assets/lounge-orange.png",
+    origin: "Guatemala, Antigua",
+    roast: "Medium",
+    notes: "Cinnamon, brown sugar, vanilla cream",
+    ingredients: ["Espresso", "Pumpkin spice", "Velvet foam"],
+    active: true,
+    sort_order: 4,
+    sku: "LOUNGE-SUNSET",
+    category: "coffee",
+    stock: 25,
+  },
+];
+
 export const resolveImage = (url: string | null) => {
   if (!url) return yellow;
   return assetMap[url] ?? url;
@@ -45,11 +116,18 @@ export const useProducts = (opts: { includeInactive?: boolean } = {}) => {
 
   const refresh = async () => {
     setLoading(true);
-    let q = supabase.from("products").select("*").order("sort_order", { ascending: true });
-    if (!opts.includeInactive) q = q.eq("active", true);
-    const { data } = await q;
-    setProducts((data as DbProduct[]) || []);
-    setLoading(false);
+    try {
+      let q = supabase.from("products").select("*").order("sort_order", { ascending: true });
+      if (!opts.includeInactive) q = q.eq("active", true);
+      const { data, error } = await q;
+      if (error) throw error;
+      setProducts(data?.length ? (data as DbProduct[]) : fallbackProducts);
+    } catch (error) {
+      console.error("Unable to load products", error);
+      setProducts(fallbackProducts);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
