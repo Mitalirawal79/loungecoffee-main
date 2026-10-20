@@ -65,9 +65,11 @@ export const SiteHeader = () => {
           aria-label="Lounge Coffee — Home"
           className="flex items-center gap-2 group"
         >
-          <div className="w-9 h-9 rounded-full bg-primary text-primary-foreground grid place-items-center font-display text-lg shadow-warm transition-transform group-hover:scale-105">
-            L
-          </div>
+          <img
+            src="/Elegant%20Lounge%20Coffee%20Emblem.png"
+            alt="Lounge Coffee Logo"
+            className="w-10 h-10 rounded-full object-cover shadow-warm transition-transform group-hover:scale-105"
+          />
           <span className="font-display text-lg text-primary leading-none">
             Lounge<br />
             <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">Coffee</span>
